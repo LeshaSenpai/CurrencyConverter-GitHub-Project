@@ -1,0 +1,49 @@
+.table-wrapper {
+    display: flex;
+    justify-content: center; 
+    margin-top: 120px; 
+}
+
+.currency-table {
+    width: 80%; 
+    border-collapse: separate; 
+    border-spacing: 0; 
+    border: 2px solid #1664b3; 
+    border-radius: 10px; 
+    margin-top: 15vh; 
+    overflow: hidden; 
+    background-color: white;
+}
+
+.currency-table td {
+    padding: 12px 15px; 
+    text-align: center; 
+}
+
+.currency-input, .currency-input-to {
+    width: 97.5%; 
+    padding: 10px;
+    box-sizing: border-box; 
+    margin-top: 10px; 
+}
+
+.CurrencyButton {
+    display: block; 
+    margin: 20px auto; 
+    width: 25%; 
+    padding: 20px; 
+    background-color: #1664b3; 
+    color: white; 
+    border: none; 
+    cursor: pointer; 
+    font-size: 14px; 
+    border-radius: 8px; 
+    transition: background-color 0.3s; 
+    word-wrap: break-word; 
+    overflow-wrap: break-word; 
+}
+
+.CurrencyButton:hover {
+    background-color: #45a049; 
+}
+

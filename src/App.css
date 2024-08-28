@@ -1,0 +1,58 @@
+/* Общий контейнер страницы */
+.page-container {
+  display: flex;
+  flex-direction: column; /* Располагаем элементы вертикально */
+  min-height: 100vh; /* Минимальная высота на весь экран */
+}
+
+/* Основной контент */
+.content {
+  flex: 1; /* Основное содержимое занимает всё доступное пространство */
+  padding: 20px; /* Добавляем отступы для контента */
+}
+
+/* Стили для футера */
+.page-footer {
+  background-color: #1976d2; /* Цвет фона футера */
+  color: white; /* Цвет текста футера */
+  text-align: center; /* Центрирование текста */
+  padding: 15px 0; /* Отступы сверху и снизу */
+  width: 100%; /* Ширина на всю страницу */
+  margin-top: auto; /* Автоматический отступ сверху */
+}
+
+.footer-content {
+  display: flex; /* Flexbox для внутренних элементов */
+  justify-content: space-between; /* Элементы по краям */
+  align-items: center; /* Центрирование по вертикали */
+  padding: 0 20px; /* Горизонтальные отступы */
+}
+
+.footer-link {
+  color: white; /* Цвет ссылок */
+  text-decoration: none; /* Убираем подчеркивание */
+}
+
+.footer-link:hover {
+  text-decoration: underline; /* Подчеркивание при наведении */
+}
+
+/* Пример стилей для основной структуры */
+body, html {
+  height: 100%;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; 
+}
+
+.table-wrapper {
+  width: 100%; /* Убедимся, что таблица занимает всю ширину */
+  max-width: 1200px; /* Максимальная ширина для таблицы */
+  margin: 0 auto; /* Центрируем таблицу */
+}

@@ -1,0 +1,72 @@
+.rates-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+.rates-table {
+  width: 80%;
+  max-width: 1000px;
+  border-collapse: collapse;
+  margin: 20px 0;
+  box-shadow: 0 4px 8px rgba(63, 2, 244, 0.192); 
+}
+
+.rates-table th,
+.rates-table td {
+  padding: 12px 15px;
+  text-align: left;
+  border: 1px solid #ddd;
+}
+
+.rates-table th {
+  background-color: #1664b3;
+  color: white;
+}
+
+.rates-table tr:hover {
+  background-color: #f1f1f1;
+}
+
+.rates-table td button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.2em;
+}
+
+.rates-table td img {
+  display: block;
+  margin: auto;
+}
+
+
+.rate-header {
+  position: relative; 
+}
+
+.info-icon {
+  margin-left: 5px; 
+  font-size: 12px; 
+  cursor: pointer; 
+}
+
+.tooltip {
+  visibility: hidden; 
+  background-color: white; 
+  color: black;
+  text-align: left; 
+  border-radius: 4px; 
+  padding: 8px; 
+  position: absolute; 
+  z-index: 1; 
+  width: 220px; 
+  top: 25px; 
+  left: 0; 
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); 
+  font-size: 12px; 
+}
+.rate-header:hover .tooltip {
+  visibility: visible; 
+}

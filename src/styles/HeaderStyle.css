@@ -1,0 +1,39 @@
+.header-nav {
+    background-color: #1976d2; 
+    padding: 0 20px;
+}
+
+.nav-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 64px;
+}
+
+.brand-logo {
+    font-size: 24px;
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+#nav-mobile {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+#nav-mobile li {
+    margin-left: 20px;
+}
+
+#nav-mobile li a {
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+}
+
+#nav-mobile li a:hover {
+    text-decoration: underline;
+}
