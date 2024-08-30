@@ -1,52 +1,47 @@
-import React, { useEffect, useState } from "react";
-import { initialItems } from "./initialItems";
-import { apiKey, url } from "./api";
-import "../styles/Rate.css";
+import React, { useContext, useState, useEffect } from 'react';
+import { CurrencyContext } from '../CurrencyContext';
+import { initialItems } from '../components/initialItems';
+import '../styles/Rates.css';
 
 const Rates = () => {
-  const [rates, setRates] = useState({});
-  const [items, setItems] = useState([]);
+  const { data, loading, error } = useContext(CurrencyContext);
 
-  useEffect(() => {
-    const savedItems = localStorage.getItem("currencyItems");
-    if (savedItems) {
-      setItems(JSON.parse(savedItems));
-    } else {
-      setItems(initialItems);
-    }
-  }, []);
+  const loadFavoriteCodes = () => {
+    const savedFavorites = localStorage.getItem('favorites');
+    return savedFavorites ? JSON.parse(savedFavorites) : [];
+  };
 
-  useEffect(() => {
-    if (items.length > 0) {
-      localStorage.setItem("currencyItems", JSON.stringify(items));
-    }
-  }, [items]);
+  const loadItems = () => {
+    const favoriteCodes = loadFavoriteCodes();
+    return initialItems
+      .map(item => ({
+        ...item,
+        isFavorite: favoriteCodes.includes(item.code),
+      }))
+      .sort((a, b) => b.isFavorite - a.isFavorite); 
+  };
 
-  const handleConvert = async (code) => {
-    try {
-      const response = await fetch(url);
-      const data = await response.json();
-      return data.rates[code];
-    } catch (error) {
-      console.error("Error fetching exchange rate:", error);
-      return "N/A";
-    }
+  const [items, setItems] = useState(loadItems);
+
+  const saveFavoritesToLocalStorage = (items) => {
+    const favoriteCodes = items
+      .filter(item => item.isFavorite)
+      .map(item => item.code);
+    localStorage.setItem('favorites', JSON.stringify(favoriteCodes));
   };
 
   useEffect(() => {
-    const fetchRates = async () => {
-      const ratesData = {};
-      for (const item of items) {
-        const rate = await handleConvert(item.code);
-        ratesData[item.code] = rate;
-      }
-      setRates(ratesData);
-    };
-
-    fetchRates();
+    saveFavoritesToLocalStorage(items);
   }, [items]);
 
-  const toggleFavorite = (id) => {
+  const getRateForCurrency = (code) => {
+    if (!data || !data.rates) {
+      return 'N/A';
+    }
+    return data.rates[code] || 'N/A';
+  };
+
+  const handleFavorite = (id) => {
     setItems((prevItems) => {
       const updatedItems = prevItems.map((item) =>
         item.id === id ? { ...item, isFavorite: !item.isFavorite } : item
@@ -54,6 +49,14 @@ const Rates = () => {
       return updatedItems.sort((a, b) => b.isFavorite - a.isFavorite);
     });
   };
+
+  if (loading) {
+    return <div>Загрузка...</div>;
+  }
+
+  if (error) {
+    return <div>{error}</div>;
+  }
 
   return (
     <div className="rates-container">
@@ -81,8 +84,8 @@ const Rates = () => {
               <td>
                 <img
                   src={
-                    item.countyCode === "EU"
-                      ? require("./images/eu.png")
+                    item.countyCode === 'EU'
+                      ? require('../components/images/eu.png')
                       : `https://flagsapi.com/${item.countyCode}/flat/64.png`
                   }
                   alt={`${item.text} flag`}
@@ -93,11 +96,13 @@ const Rates = () => {
               <td>{item.text}</td>
               <td className="center-content">{item.symbol}</td>
               <td className="center-content">
-                {rates[item.code] ? rates[item.code].toFixed(2) : "Loading..."}
+                {getRateForCurrency(item.code) !== 'N/A'
+                  ? getRateForCurrency(item.code).toFixed(2)
+                  : 'Loading...'}
               </td>
               <td className="center-content">
-                <button onClick={() => toggleFavorite(item.id)}>
-                  {item.isFavorite ? "⭐" : "☆"}
+                <button onClick={() => handleFavorite(item.id)}>
+                  {item.isFavorite ? '⭐' : '☆'}
                 </button>
               </td>
             </tr>

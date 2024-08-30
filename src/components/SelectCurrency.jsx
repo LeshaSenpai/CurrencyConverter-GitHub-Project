@@ -1,10 +1,22 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { initialItems } from "./initialItems";
 
 const SelectCurrency = ({ onSelect }) => {
+  
+  const loadFavoriteCodes = () => {
+    const savedFavorites = localStorage.getItem("favorites");
+    return savedFavorites ? JSON.parse(savedFavorites) : [];
+  };
+
+  
   const loadItems = () => {
-    const savedItems = localStorage.getItem("items");
-    return savedItems ? JSON.parse(savedItems) : initialItems;
+    const favoriteCodes = loadFavoriteCodes();
+    return initialItems
+      .map((item) => ({
+        ...item,
+        isFavorite: favoriteCodes.includes(item.code),
+      }))
+      .sort((a, b) => b.isFavorite - a.isFavorite); 
   };
 
   const [items, setItems] = useState(loadItems);
@@ -13,10 +25,32 @@ const SelectCurrency = ({ onSelect }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [searchMode, setSearchMode] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
+  const containerRef = useRef(null);
+
+  const saveFavoritesToLocalStorage = (items) => {
+    const favoriteCodes = items
+      .filter(item => item.isFavorite)
+      .map(item => item.code);
+    localStorage.setItem("favorites", JSON.stringify(favoriteCodes));
+  };
 
   useEffect(() => {
-    localStorage.setItem("items", JSON.stringify(items));
+    saveFavoritesToLocalStorage(items);
   }, [items]);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (containerRef.current && !containerRef.current.contains(event.target)) {
+        setIsOpen(false);
+        setSearchMode(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   const handleSelect = (id) => {
     const selected = items.find((item) => item.id === id);
@@ -31,24 +65,25 @@ const SelectCurrency = ({ onSelect }) => {
 
   const handleFavorite = (id) => {
     setItems((prevItems) => {
-      const updatedItems = prevItems.map((item) =>
+      const sortedItems = prevItems.sort((a, b) => b.isFavorite - a.isFavorite);
+
+      const updatedItems = sortedItems.map((item) =>
         item.id === id ? { ...item, isFavorite: !item.isFavorite } : item
       );
-      return updatedItems.sort((a, b) => b.isFavorite - a.isFavorite);
+
+      return updatedItems;
     });
 
     setFilteredItems((prevItems) =>
-      prevItems
-        .map((item) =>
-          item.id === id ? { ...item, isFavorite: !item.isFavorite } : item
-        )
-        .sort((a, b) => b.isFavorite - a.isFavorite)
+      prevItems.map((item) =>
+        item.id === id ? { ...item, isFavorite: !item.isFavorite } : item
+      ).sort((a, b) => b.isFavorite - a.isFavorite)
     );
   };
 
-  const handleDoubleClick = () => {
+  const handleClick = () => {
+    setIsOpen(!isOpen);
     setSearchMode(true);
-    setIsOpen(true);
   };
 
   const handleSearchChange = (e) => {
@@ -66,12 +101,8 @@ const SelectCurrency = ({ onSelect }) => {
   };
 
   return (
-    <div className="select-container">
-      <div
-        className="select-currency"
-        onClick={() => setIsOpen(!isOpen)}
-        onDoubleClick={handleDoubleClick}
-      >
+    <div className="select-container" ref={containerRef}>
+      <div className="select-currency" onClick={handleClick}>
         {selectedItem ? (
           selectedItem.text
         ) : (

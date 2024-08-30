@@ -1,34 +1,41 @@
 import React, { useState } from "react";
-import { SelectCurrency } from "./ListOfCurrencyFrom";
-import { apiKey, url } from "./api";
+import { SelectCurrency } from "../components/SelectCurrency";
+import { fetchCurrencyData } from "../components/api";
 import "../styles/TableStyle.css";
 
-const CurrencyTable = () => {
+const CurrencyConvert = () => {
   const [fromValue, setFromValue] = useState("");
   const [toValue, setToValue] = useState("");
   const [fromCurrency, setFromCurrency] = useState("");
   const [toCurrency, setToCurrency] = useState("");
 
   const handleConvert = async () => {
-    try {
-      const response = await fetch(url);
-      const data = await response.json();
+    if (fromValue.endsWith(".")) {
+      setToValue("Ошибка ввода, После точки ожидаются символы");
+      return;
+    }
 
-      console.log(toCurrency);
+    try {
+      const data = await fetchCurrencyData();
       const FactorCurrencyFrom = data.rates[fromCurrency.code] || data.rates["BYN"];
       const FactorCurrencyTo = data.rates[toCurrency.code] || data.rates["USD"];
-      //console.log(FactorCurrencyFrom)
-      //console.log(FactorCurrencyTo)
-      //console.log(data);
 
       const result = (
         (parseFloat(fromValue) / FactorCurrencyFrom) *
         FactorCurrencyTo
       ).toFixed(2);
+
       setToValue(result);
     } catch (error) {
+      alert("Ошибка конвертации");
       console.error("Ошибка при конвертации валют:", error);
-      setToValue("Проверьте данные");
+    }
+  };
+
+  const handleInputChange = (e) => {
+    const value = e.target.value;
+    if (/^\d*\.?\d*$/.test(value)) {
+      setFromValue(value);
     }
   };
 
@@ -39,7 +46,6 @@ const CurrencyTable = () => {
           <td>
             <SelectCurrency
               className="CurrencyFrom"
-              se
               onSelect={setFromCurrency}
             />
           </td>
@@ -54,14 +60,14 @@ const CurrencyTable = () => {
               className="currency-input"
               placeholder="Введите значение"
               value={fromValue}
-              onChange={(e) => setFromValue(e.target.value)}
+              onChange={handleInputChange}
             />
           </td>
           <td>
             <input
               type="text"
               className="currency-input"
-              placeholder="Что бы облегчить поиск, кликните дважды по окну выбора валюты"
+              placeholder="Результат конвертации"
               value={toValue}
               readOnly
             />
@@ -79,4 +85,4 @@ const CurrencyTable = () => {
   );
 };
 
-export { CurrencyTable };
+export { CurrencyConvert};
