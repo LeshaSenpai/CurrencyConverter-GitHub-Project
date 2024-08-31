@@ -7,8 +7,9 @@ import { Rates } from './Pages/Rates';
 import { Footer } from './components/FooterFixed'; 
 import { CurrencyProvider } from './CurrencyContext';
 import './App.css';
+import './styles/SelectCurrency.css';
 import './styles/CurrencyConvert.css';
-import './styles/TableStyle.css';
+
 
 function App() {
   return (

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { SelectCurrency } from "../components/SelectCurrency";
 import { fetchCurrencyData } from "../components/api";
-import "../styles/TableStyle.css";
+import "../styles/CurrencyConvert.css";
 
 const CurrencyConvert = () => {
   const [fromValue, setFromValue] = useState("");
