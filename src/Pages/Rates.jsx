@@ -1,38 +1,34 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { CurrencyContext } from '../CurrencyContext';
+import { CurrencyContext } from '../components/contexts/CurrencyContext';
 import { initialItems } from '../components/initialItems';
 import '../styles/Rates.css';
 
 const Rates = () => {
-  const { data, loading, error } = useContext(CurrencyContext);
-
-  const loadFavoriteCodes = () => {
-    const savedFavorites = localStorage.getItem('favorites');
-    return savedFavorites ? JSON.parse(savedFavorites) : [];
-  };
+  const {
+    data,
+    loading,
+    error,
+    favorite,
+    setFavorite,
+  } = useContext(CurrencyContext);
 
   const loadItems = () => {
-    const favoriteCodes = loadFavoriteCodes();
     return initialItems
       .map(item => ({
         ...item,
-        isFavorite: favoriteCodes.includes(item.code),
+        isFavorite: favorite.includes(item.code),
       }))
-      .sort((a, b) => b.isFavorite - a.isFavorite); 
+      .sort((a, b) => b.isFavorite - a.isFavorite);
   };
 
   const [items, setItems] = useState(loadItems);
 
-  const saveFavoritesToLocalStorage = (items) => {
-    const favoriteCodes = items
+  useEffect(() => {
+    const updatedFavorites = items
       .filter(item => item.isFavorite)
       .map(item => item.code);
-    localStorage.setItem('favorites', JSON.stringify(favoriteCodes));
-  };
-
-  useEffect(() => {
-    saveFavoritesToLocalStorage(items);
-  }, [items]);
+    setFavorite(updatedFavorites);
+  }, [items, setFavorite]);
 
   const getRateForCurrency = (code) => {
     if (!data || !data.rates) {

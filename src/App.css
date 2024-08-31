@@ -50,8 +50,4 @@ body, html {
   min-height: 100vh; 
 }
 
-.table-wrapper {
-  width: 100%;
-  max-width: 1200px; 
-  margin: 0 auto; 
-}
+

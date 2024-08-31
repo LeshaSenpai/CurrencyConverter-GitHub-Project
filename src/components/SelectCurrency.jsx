@@ -8,7 +8,6 @@ const SelectCurrency = ({ onSelect }) => {
     return savedFavorites ? JSON.parse(savedFavorites) : [];
   };
 
-  
   const loadItems = () => {
     const favoriteCodes = loadFavoriteCodes();
     return initialItems
@@ -16,14 +15,13 @@ const SelectCurrency = ({ onSelect }) => {
         ...item,
         isFavorite: favoriteCodes.includes(item.code),
       }))
-      .sort((a, b) => b.isFavorite - a.isFavorite); 
+      .sort((a, b) => b.isFavorite - a.isFavorite);
   };
 
   const [items, setItems] = useState(loadItems);
   const [filteredItems, setFilteredItems] = useState(items);
   const [selectedItem, setSelectedItem] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
-  const [searchMode, setSearchMode] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const containerRef = useRef(null);
 
@@ -42,7 +40,6 @@ const SelectCurrency = ({ onSelect }) => {
     const handleClickOutside = (event) => {
       if (containerRef.current && !containerRef.current.contains(event.target)) {
         setIsOpen(false);
-        setSearchMode(false);
       }
     };
 
@@ -56,7 +53,6 @@ const SelectCurrency = ({ onSelect }) => {
     const selected = items.find((item) => item.id === id);
     setSelectedItem(selected);
     setIsOpen(false);
-    setSearchMode(false);
 
     if (onSelect) {
       onSelect(selected);
@@ -83,7 +79,8 @@ const SelectCurrency = ({ onSelect }) => {
 
   const handleClick = () => {
     setIsOpen(!isOpen);
-    setSearchMode(true);
+    setSearchTerm("");
+    setFilteredItems(items); 
   };
 
   const handleSearchChange = (e) => {
@@ -111,15 +108,13 @@ const SelectCurrency = ({ onSelect }) => {
       </div>
       {isOpen && (
         <div className="options-currency">
-          {searchMode && (
-            <input
-              type="text"
-              className="search-input"
-              placeholder="Поиск валюты..."
-              value={searchTerm}
-              onChange={handleSearchChange}
-            />
-          )}
+          <input
+            type="text"
+            className="search-input"
+            placeholder="Поиск валюты..."
+            value={searchTerm}
+            onChange={handleSearchChange}
+          />
           {filteredItems.length > 0 ? (
             filteredItems.map((item) => (
               <div

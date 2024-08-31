@@ -1,8 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import "../styles/HeaderStyle.css";
+import "./Header.css";
 
-function HeaderCurrency() {
+function Header () {
   return (
     <div>
       <nav className="header-nav">
@@ -24,4 +24,4 @@ function HeaderCurrency() {
   );
 }
 
-export { HeaderCurrency };
+export { Header };

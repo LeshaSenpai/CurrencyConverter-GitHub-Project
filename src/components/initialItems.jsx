@@ -5,7 +5,6 @@ export const initialItems = [
     symbol: "$",
     code: "USD",
     countyCode: "US",
-    isFavorite: false,
   },
   {
     id: 2,
@@ -13,7 +12,6 @@ export const initialItems = [
     symbol: "€",
     code: "EUR",
     countyCode: "EU",
-    isFavorite: false,
   },
   {
     id: 3,
@@ -21,7 +19,6 @@ export const initialItems = [
     symbol: "£",
     code: "GBP",
     countyCode: "GB",
-    isFavorite: false,
   },
   {
     id: 4,
@@ -29,7 +26,6 @@ export const initialItems = [
     symbol: "¥",
     code: "JPY",
     countyCode: "JP",
-    isFavorite: false,
   },
   {
     id: 5,
@@ -37,7 +33,6 @@ export const initialItems = [
     symbol: "₹",
     code: "INR",
     countyCode: "IN",
-    isFavorite: false,
   },
   {
     id: 6,
@@ -45,47 +40,36 @@ export const initialItems = [
     symbol: "A$",
     code: "AUD",
     countyCode: "AU",
-    isFavorite: false,
   },
   {
-    id: 7,
     text: "Канадский доллар",
     symbol: "C$",
     code: "CAD",
     countyCode: "CA",
-    isFavorite: false,
   },
   {
-    id: 8,
     text: "Швейцарский франк",
     symbol: "CHF",
     code: "CHF",
     countyCode: "CH",
-    isFavorite: false,
   },
   {
-    id: 9,
     text: "Китайский юань",
     symbol: "¥",
     code: "CNY",
     countyCode: "CN",
-    isFavorite: false,
   },
   {
-    id: 10,
     text: "Шведская крона",
     symbol: "kr",
     code: "SEK",
     countyCode: "SE",
-    isFavorite: false,
   },
   {
-    id: 11,
     text: "Новозеланд. доллар",
     symbol: "NZ$",
     code: "NZD",
     countyCode: "NZ",
-    isFavorite: false,
   },
   {
     id: 12,
@@ -93,7 +77,6 @@ export const initialItems = [
     symbol: "$",
     code: "MXN",
     countyCode: "MX",
-    isFavorite: false,
   },
   {
     id: 13,
@@ -101,7 +84,6 @@ export const initialItems = [
     symbol: "S$",
     code: "SGD",
     countyCode: "SG",
-    isFavorite: false,
   },
   {
     id: 14,
@@ -109,7 +91,6 @@ export const initialItems = [
     symbol: "HK$",
     code: "HKD",
     countyCode: "HK",
-    isFavorite: false,
   },
   {
     id: 15,
@@ -117,7 +98,6 @@ export const initialItems = [
     symbol: "kr",
     code: "NOK",
     countyCode: "NO",
-    isFavorite: false,
   },
   {
     id: 16,
@@ -125,7 +105,6 @@ export const initialItems = [
     symbol: "₩",
     code: "KRW",
     countyCode: "KR",
-    isFavorite: false,
   },
   {
     id: 17,
@@ -133,7 +112,6 @@ export const initialItems = [
     symbol: "₺",
     code: "TRY",
     countyCode: "TR",
-    isFavorite: false,
   },
   {
     id: 18,
@@ -141,7 +119,6 @@ export const initialItems = [
     symbol: "₽",
     code: "RUB",
     countyCode: "RU",
-    isFavorite: false,
   },
   {
     id: 19,
@@ -149,7 +126,6 @@ export const initialItems = [
     symbol: "R",
     code: "ZAR",
     countyCode: "ZA",
-    isFavorite: false,
   },
   {
     id: 20,
@@ -157,7 +133,6 @@ export const initialItems = [
     symbol: "R$",
     code: "BRL",
     countyCode: "BR",
-    isFavorite: false,
   },
   {
     id: 21,
@@ -165,7 +140,6 @@ export const initialItems = [
     symbol: "RM",
     code: "MYR",
     countyCode: "MY",
-    isFavorite: false,
   },
   {
     id: 22,
@@ -173,7 +147,6 @@ export const initialItems = [
     symbol: "₱",
     code: "PHP",
     countyCode: "PH",
-    isFavorite: false,
   },
   {
     id: 23,
@@ -181,7 +154,6 @@ export const initialItems = [
     symbol: "Kč",
     code: "CZK",
     countyCode: "CZ",
-    isFavorite: false,
   },
   {
     id: 24,
@@ -189,7 +161,6 @@ export const initialItems = [
     symbol: "Rp",
     code: "IDR",
     countyCode: "ID",
-    isFavorite: false,
   },
   {
     id: 25,
@@ -197,7 +168,6 @@ export const initialItems = [
     symbol: "Ft",
     code: "HUF",
     countyCode: "HU",
-    isFavorite: false,
   },
   {
     id: 26,
@@ -205,7 +175,6 @@ export const initialItems = [
     symbol: "kr",
     code: "ISK",
     countyCode: "IS",
-    isFavorite: false,
   },
   {
     id: 27,
@@ -213,7 +182,6 @@ export const initialItems = [
     symbol: "₪",
     code: "ILS",
     countyCode: "IL",
-    isFavorite: false,
   },
   {
     id: 28,
@@ -221,7 +189,6 @@ export const initialItems = [
     symbol: "$",
     code: "CLP",
     countyCode: "CL",
-    isFavorite: false,
   },
   {
     id: 29,
@@ -229,7 +196,6 @@ export const initialItems = [
     symbol: "₨",
     code: "PKR",
     countyCode: "PK",
-    isFavorite: false,
   },
   {
     id: 30,
@@ -237,7 +203,6 @@ export const initialItems = [
     symbol: "฿",
     code: "THB",
     countyCode: "TH",
-    isFavorite: false,
   },
   {
     id: 31,
@@ -245,7 +210,6 @@ export const initialItems = [
     symbol: "₦",
     code: "NGN",
     countyCode: "NG",
-    isFavorite: false,
   },
   {
     id: 32,
@@ -253,7 +217,6 @@ export const initialItems = [
     symbol: "₴",
     code: "UAH",
     countyCode: "UA",
-    isFavorite: false,
   },
   {
     id: 33,
@@ -261,7 +224,6 @@ export const initialItems = [
     symbol: "$",
     code: "COP",
     countyCode: "CO",
-    isFavorite: false,
   },
   {
     id: 34,
@@ -269,7 +231,6 @@ export const initialItems = [
     symbol: "TSh",
     code: "TZS",
     countyCode: "TZ",
-    isFavorite: false,
   },
   {
     id: 35,
@@ -277,7 +238,6 @@ export const initialItems = [
     symbol: "$",
     code: "ARS",
     countyCode: "AR",
-    isFavorite: false,
   },
   {
     id: 36,
@@ -285,7 +245,6 @@ export const initialItems = [
     symbol: "₫",
     code: "VND",
     countyCode: "VN",
-    isFavorite: false,
   },
   {
     id: 37,
@@ -293,7 +252,6 @@ export const initialItems = [
     symbol: "лв",
     code: "BGN",
     countyCode: "BG",
-    isFavorite: false,
   },
   {
     id: 38,
@@ -301,7 +259,6 @@ export const initialItems = [
     symbol: "kn",
     code: "HRK",
     countyCode: "HR",
-    isFavorite: false,
   },
   {
     id: 39,
@@ -309,7 +266,6 @@ export const initialItems = [
     symbol: "lei",
     code: "RON",
     countyCode: "RO",
-    isFavorite: false,
   },
   {
     id: 40,
@@ -317,7 +273,6 @@ export const initialItems = [
     symbol: "Br",
     code: "BYN",
     countyCode: "BY",
-    isFavorite: false,
   },
   {
     id: 41,
@@ -325,7 +280,6 @@ export const initialItems = [
     symbol: "L",
     code: "ALL",
     countyCode: "AL",
-    isFavorite: false,
   },
   {
     id: 42,
@@ -333,7 +287,6 @@ export const initialItems = [
     symbol: "֏",
     code: "AMD",
     countyCode: "AM",
-    isFavorite: false,
   },
   {
     id: 43,
@@ -341,7 +294,6 @@ export const initialItems = [
     symbol: "₼",
     code: "AZN",
     countyCode: "AZ",
-    isFavorite: false,
   },
   {
     id: 44,
@@ -349,7 +301,6 @@ export const initialItems = [
     symbol: "KM",
     code: "BAM",
     countyCode: "BA",
-    isFavorite: false,
   },
   {
     id: 45,
@@ -357,7 +308,6 @@ export const initialItems = [
     symbol: "₾",
     code: "GEL",
     countyCode: "GE",
-    isFavorite: false,
   },
   {
     id: 46,
@@ -365,7 +315,6 @@ export const initialItems = [
     symbol: "₸",
     code: "KZT",
     countyCode: "KZ",
-    isFavorite: false,
   },
   {
     id: 47,
@@ -373,7 +322,6 @@ export const initialItems = [
     symbol: "сом",
     code: "KGS",
     countyCode: "KG",
-    isFavorite: false,
   },
   {
     id: 48,
@@ -381,7 +329,6 @@ export const initialItems = [
     symbol: "L",
     code: "MDL",
     countyCode: "MD",
-    isFavorite: false,
   },
   {
     id: 49,
@@ -389,7 +336,6 @@ export const initialItems = [
     symbol: "ден",
     code: "MKD",
     countyCode: "MK",
-    isFavorite: false,
   },
   {
     id: 50,
@@ -397,7 +343,6 @@ export const initialItems = [
     symbol: "дин",
     code: "RSD",
     countyCode: "RS",
-    isFavorite: false,
   },
   {
     id: 51,
@@ -405,7 +350,6 @@ export const initialItems = [
     symbol: "m",
     code: "TMT",
     countyCode: "TM",
-    isFavorite: false,
   },
   {
     id: 52,
@@ -413,7 +357,6 @@ export const initialItems = [
     symbol: "сўм",
     code: "UZS",
     countyCode: "UZ",
-    isFavorite: false,
   },
   {
     id: 53,
@@ -421,6 +364,5 @@ export const initialItems = [
     symbol: "смн",
     code: "TJS",
     countyCode: "TJ",
-    isFavorite: false,
   },
 ];

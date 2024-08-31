@@ -1,11 +1,11 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import { HeaderCurrency } from './components/HeaderCurrency';
-import { CurrencyConvert} from './Pages/CurrencyConvert';
-import { NotFound } from './components/NotFound';
-import { Rates } from './Pages/Rates';
-import { Footer } from './components/FooterFixed'; 
-import { CurrencyProvider } from './CurrencyContext';
+import { Header } from './components/header/Header';
+import { CurrencyConvert} from './pages/CurrencyConvert';
+import { NotFound } from './pages/NotFound';
+import { Rates } from './pages/Rates';
+import { Footer } from './components/footer/Footer'; 
+import { CurrencyProvider } from './components/contexts/CurrencyContext';
 import './App.css';
 import './styles/SelectCurrency.css';
 import './styles/CurrencyConvert.css';
@@ -16,14 +16,10 @@ function App() {
     <CurrencyProvider>
       <Router>
         <div className="page-container">
-          <HeaderCurrency />
+          <Header/>
           <main className="content">
             <Routes>
-              <Route path="/" element={
-                <div className="table-wrapper">
-                  <CurrencyConvert className='leftSelectCurrency'/>
-                </div>
-              } />
+              <Route path="/" element={<CurrencyConvert/>} />
               <Route path="/Rates" element={<Rates />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
