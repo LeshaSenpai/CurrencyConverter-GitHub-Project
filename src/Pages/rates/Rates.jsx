@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { CurrencyContext } from '../components/contexts/CurrencyContext';
-import { initialItems } from '../components/initialItems';
-import '../styles/Rates.css';
+import { CurrencyContext } from '../../contexts/CurrencyContext';
+import { initialItems } from '../../components/initialItems';
+import './Rates.css';
 
 const Rates = () => {
   const {
@@ -81,7 +81,7 @@ const Rates = () => {
                 <img
                   src={
                     item.countyCode === 'EU'
-                      ? require('../components/images/eu.png')
+                      ? `${process.env.PUBLIC_URL}/eu.png`
                       : `https://flagsapi.com/${item.countyCode}/flat/64.png`
                   }
                   alt={`${item.text} flag`}

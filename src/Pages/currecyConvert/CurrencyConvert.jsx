@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
-import { SelectCurrency } from "../components/SelectCurrency";
-import { CurrencyContext } from '../components/contexts/CurrencyContext';
-import "../styles/CurrencyConvert.css";
+import { SelectCurrency } from "../../components/selectCurrency/SelectCurrency";
+import { CurrencyContext } from '../../contexts/CurrencyContext';
+import "./CurrencyConvert.css";
 
 const CurrencyConvert = () => {
   const { data } = useContext(CurrencyContext); 
@@ -9,10 +9,13 @@ const CurrencyConvert = () => {
   const [toValue, setToValue] = useState("");
   const [fromCurrency, setFromCurrency] = useState("");
   const [toCurrency, setToCurrency] = useState("");
+  const [errorMessage, setErrorMessage] = useState(""); 
 
   const handleConvert = () => {
+    setErrorMessage(""); 
+
     if (fromValue.endsWith(".")) {
-      setToValue("Ошибка ввода, после точки ожидаются символы");
+      setErrorMessage("Ошибка ввода, после точки ожидаются символы");
       return;
     }
 
@@ -28,7 +31,7 @@ const CurrencyConvert = () => {
 
         setToValue(result);
       } catch (error) {
-        setToValue("Ошибка при конвертации валют, попробуйте снова");
+        setErrorMessage("Ошибка при конвертации валют, попробуйте снова");
       }
     }
   };
@@ -73,6 +76,7 @@ const CurrencyConvert = () => {
                 value={toValue}
                 readOnly
               />
+              <span className="Error-message">{errorMessage}</span>
             </td>
           </tr>
           <tr>

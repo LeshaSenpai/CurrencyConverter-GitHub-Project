@@ -1,15 +1,13 @@
-import React, { useState, useEffect, useRef } from "react";
-import { initialItems } from "./initialItems";
+import React, { useState, useEffect, useRef, useContext } from "react";
+import { initialItems } from "../initialItems";
+import { CurrencyContext } from "../../contexts/CurrencyContext";
+import { getFavorite } from "../../api/CurrencyApi";
 
 const SelectCurrency = ({ onSelect }) => {
-  
-  const loadFavoriteCodes = () => {
-    const savedFavorites = localStorage.getItem("favorites");
-    return savedFavorites ? JSON.parse(savedFavorites) : [];
-  };
+  const { favorite, setFavorite } = useContext(CurrencyContext);
 
   const loadItems = () => {
-    const favoriteCodes = loadFavoriteCodes();
+    const favoriteCodes = getFavorite();
     return initialItems
       .map((item) => ({
         ...item,
@@ -18,22 +16,22 @@ const SelectCurrency = ({ onSelect }) => {
       .sort((a, b) => b.isFavorite - a.isFavorite);
   };
 
-  const [items, setItems] = useState(loadItems);
+  const [items, setItems] = useState(() => loadItems());
   const [filteredItems, setFilteredItems] = useState(items);
   const [selectedItem, setSelectedItem] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const containerRef = useRef(null);
 
-  const saveFavoritesToLocalStorage = (items) => {
-    const favoriteCodes = items
+  useEffect(() => {
+    const updatedFavorites = items
       .filter(item => item.isFavorite)
       .map(item => item.code);
-    localStorage.setItem("favorites", JSON.stringify(favoriteCodes));
-  };
+    setFavorite(updatedFavorites);
+  }, [items, setFavorite]);
 
   useEffect(() => {
-    saveFavoritesToLocalStorage(items);
+    setFilteredItems(items);
   }, [items]);
 
   useEffect(() => {
@@ -61,26 +59,28 @@ const SelectCurrency = ({ onSelect }) => {
 
   const handleFavorite = (id) => {
     setItems((prevItems) => {
-      const sortedItems = prevItems.sort((a, b) => b.isFavorite - a.isFavorite);
-
-      const updatedItems = sortedItems.map((item) =>
+      const updatedItems = prevItems.map((item) =>
         item.id === id ? { ...item, isFavorite: !item.isFavorite } : item
       );
 
-      return updatedItems;
+      return updatedItems.sort((a, b) => b.isFavorite - a.isFavorite);
     });
 
     setFilteredItems((prevItems) =>
-      prevItems.map((item) =>
-        item.id === id ? { ...item, isFavorite: !item.isFavorite } : item
-      ).sort((a, b) => b.isFavorite - a.isFavorite)
+      prevItems
+        .map((item) =>
+          item.id === id ? { ...item, isFavorite: !item.isFavorite } : item
+        )
+        .sort((a, b) => b.isFavorite - a.isFavorite)
     );
   };
 
   const handleClick = () => {
     setIsOpen(!isOpen);
-    setSearchTerm("");
-    setFilteredItems(items); 
+    if (!isOpen) {
+      setSearchTerm("");
+      setFilteredItems(items);
+    }
   };
 
   const handleSearchChange = (e) => {
