@@ -47,8 +47,8 @@ const SelectCurrency = ({ onSelect }) => {
     };
   }, []);
 
-  const handleSelect = (id) => {
-    const selected = items.find((item) => item.id === id);
+  const handleSelect = (currencyCode) => {
+    const selected = items.find((item) => item.currencyCode === currencyCode);
     setSelectedItem(selected);
     setIsOpen(false);
 
@@ -57,10 +57,10 @@ const SelectCurrency = ({ onSelect }) => {
     }
   };
 
-  const handleFavorite = (id) => {
+  const handleFavorite = (currencyCode) => {
     setItems((prevItems) => {
       const updatedItems = prevItems.map((item) =>
-        item.id === id ? { ...item, isFavorite: !item.isFavorite } : item
+        item.currencyCode === currencyCode ? { ...item, isFavorite: !item.isFavorite } : item
       );
 
       return updatedItems.sort((a, b) => b.isFavorite - a.isFavorite);
@@ -69,7 +69,7 @@ const SelectCurrency = ({ onSelect }) => {
     setFilteredItems((prevItems) =>
       prevItems
         .map((item) =>
-          item.id === id ? { ...item, isFavorite: !item.isFavorite } : item
+          item.currencyCode === currencyCode ? { ...item, isFavorite: !item.isFavorite } : item
         )
         .sort((a, b) => b.isFavorite - a.isFavorite)
     );
@@ -118,18 +118,18 @@ const SelectCurrency = ({ onSelect }) => {
           {filteredItems.length > 0 ? (
             filteredItems.map((item) => (
               <div
-                key={item.id}
+                key={item.currencyCode}
                 className={`option-currency ${
-                  selectedItem && selectedItem.id === item.id ? "selected" : ""
+                  selectedItem && selectedItem.currencyCode === item.currencyCode ? "selected" : ""
                 }`}
-                onClick={() => handleSelect(item.id)}
+                onClick={() => handleSelect(item.currencyCode)}
               >
                 <span>{item.text}</span>
                 <button
                   type="button"
                   onClick={(e) => {
                     e.stopPropagation();
-                    handleFavorite(item.id);
+                    handleFavorite(item.currencyCode);
                   }}
                   className="favorite-button"
                 >

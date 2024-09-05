@@ -37,10 +37,10 @@ const Rates = () => {
     return data.rates[code] || 'N/A';
   };
 
-  const handleFavorite = (id) => {
+  const handleFavorite = (currencyCode) => {
     setItems((prevItems) => {
       const updatedItems = prevItems.map((item) =>
-        item.id === id ? { ...item, isFavorite: !item.isFavorite } : item
+        item.currencyCode === currencyCode ? { ...item, isFavorite: !item.isFavorite } : item
       );
       return updatedItems.sort((a, b) => b.isFavorite - a.isFavorite);
     });
@@ -76,13 +76,13 @@ const Rates = () => {
         </thead>
         <tbody>
           {items.map((item) => (
-            <tr key={item.id}>
+            <tr key={item.currencyCode}>
               <td>
                 <img
                   src={
-                    item.countyCode === 'EU'
+                    item.currencyCode === 'EU'
                       ? `${process.env.PUBLIC_URL}/eu.png`
-                      : `https://flagsapi.com/${item.countyCode}/flat/64.png`
+                      : `https://flagsapi.com/${item.currencyCode}/flat/64.png`
                   }
                   alt={`${item.text} flag`}
                   width="64"
@@ -97,7 +97,7 @@ const Rates = () => {
                   : 'Loading...'}
               </td>
               <td className="center-content">
-                <button onClick={() => handleFavorite(item.id)}>
+                <button onClick={() => handleFavorite(item.currencyCode)}>
                   {item.isFavorite ? '⭐' : '☆'}
                 </button>
               </td>

@@ -10,11 +10,23 @@ const CurrencyConvert = () => {
   const [fromCurrency, setFromCurrency] = useState("");
   const [toCurrency, setToCurrency] = useState("");
   const [errorMessage, setErrorMessage] = useState(""); 
+  const [lastInputField, setLastInputField] = useState("from"); 
 
   const handleConvert = () => {
-    setErrorMessage(""); 
+    setErrorMessage("");
 
-    if (fromValue.endsWith(".")) {
+    let value = lastInputField === "from" ? fromValue : toValue;
+
+    if (value === "") {
+      value = "1";
+      if (lastInputField === "from") {
+        setFromValue(value);
+      } else {
+        setToValue(value);
+      }
+    }
+
+    if (value.endsWith(".")) {
       setErrorMessage("Ошибка ввода, после точки ожидаются символы");
       return;
     }
@@ -24,22 +36,32 @@ const CurrencyConvert = () => {
         const FactorCurrencyFrom = data.rates[fromCurrency.code] || data.rates["BYN"];
         const FactorCurrencyTo = data.rates[toCurrency.code] || data.rates["USD"];
 
-        const result = (
-          (parseFloat(fromValue) / FactorCurrencyFrom) *
-          FactorCurrencyTo
-        ).toFixed(2);
+        let result;
 
-        setToValue(result);
+        if (lastInputField === "from") {
+          result = ((parseFloat(value) / FactorCurrencyFrom) * FactorCurrencyTo).toFixed(2);
+          setToValue(result);
+        } else {
+          result = ((parseFloat(value) / FactorCurrencyTo) * FactorCurrencyFrom).toFixed(2);
+          setFromValue(result);
+        }
+
       } catch (error) {
         setErrorMessage("Ошибка при конвертации валют, попробуйте снова");
       }
     }
   };
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e, isFromField) => {
     const value = e.target.value;
     if (/^\d*\.?\d*$/.test(value)) {
-      setFromValue(value);
+      if (isFromField) {
+        setFromValue(value);
+        setLastInputField("from");
+      } else {
+        setToValue(value);
+        setLastInputField("to");
+      }
     }
   };
 
@@ -65,16 +87,16 @@ const CurrencyConvert = () => {
                 className="currency-input"
                 placeholder="Введите значение"
                 value={fromValue}
-                onChange={handleInputChange}
+                onChange={(e) => handleInputChange(e, true)}
               />
             </td>
             <td>
               <input
                 type="text"
                 className="currency-input"
-                placeholder="Результат конвертации"
+                placeholder="Введите значение"
                 value={toValue}
-                readOnly
+                onChange={(e) => handleInputChange(e, false)}
               />
               <span className="Error-message">{errorMessage}</span>
             </td>
