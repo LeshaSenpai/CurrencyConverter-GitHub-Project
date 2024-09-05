@@ -3,7 +3,7 @@ import { initialItems } from "../initialItems";
 import { CurrencyContext } from "../../contexts/CurrencyContext";
 import { getFavorite } from "../../api/CurrencyApi";
 
-const SelectCurrency = ({ onSelect }) => {
+const SelectCurrency = ({ onSelect, defaultCurrency }) => {
   const { favorite, setFavorite } = useContext(CurrencyContext);
 
   const loadItems = () => {
@@ -35,6 +35,18 @@ const SelectCurrency = ({ onSelect }) => {
   }, [items]);
 
   useEffect(() => {
+    if (defaultCurrency) {
+      const defaultItem = items.find(item => item.code === defaultCurrency);
+      if (defaultItem) {
+        setSelectedItem(defaultItem);
+        if (onSelect) {
+          onSelect(defaultItem);
+        }
+      }
+    }
+  }, [defaultCurrency, items, onSelect]);
+
+  useEffect(() => {
     const handleClickOutside = (event) => {
       if (containerRef.current && !containerRef.current.contains(event.target)) {
         setIsOpen(false);
@@ -48,7 +60,7 @@ const SelectCurrency = ({ onSelect }) => {
   }, []);
 
   const handleSelect = (currencyCode) => {
-    const selected = items.find((item) => item.currencyCode === currencyCode);
+    const selected = items.find((item) => item.code === currencyCode);
     setSelectedItem(selected);
     setIsOpen(false);
 
@@ -60,7 +72,7 @@ const SelectCurrency = ({ onSelect }) => {
   const handleFavorite = (currencyCode) => {
     setItems((prevItems) => {
       const updatedItems = prevItems.map((item) =>
-        item.currencyCode === currencyCode ? { ...item, isFavorite: !item.isFavorite } : item
+        item.code === currencyCode ? { ...item, isFavorite: !item.isFavorite } : item
       );
 
       return updatedItems.sort((a, b) => b.isFavorite - a.isFavorite);
@@ -69,7 +81,7 @@ const SelectCurrency = ({ onSelect }) => {
     setFilteredItems((prevItems) =>
       prevItems
         .map((item) =>
-          item.currencyCode === currencyCode ? { ...item, isFavorite: !item.isFavorite } : item
+          item.code === currencyCode ? { ...item, isFavorite: !item.isFavorite } : item
         )
         .sort((a, b) => b.isFavorite - a.isFavorite)
     );
@@ -103,7 +115,7 @@ const SelectCurrency = ({ onSelect }) => {
         {selectedItem ? (
           selectedItem.text
         ) : (
-          <i className="placeholder-text">Выберите валюту для конвертации (по умолчанию BYN→USD)</i>
+          <i className="placeholder-text">Выберите валюту для конвертации</i>
         )}
       </div>
       {isOpen && (
@@ -118,18 +130,18 @@ const SelectCurrency = ({ onSelect }) => {
           {filteredItems.length > 0 ? (
             filteredItems.map((item) => (
               <div
-                key={item.currencyCode}
+                key={item.code}
                 className={`option-currency ${
-                  selectedItem && selectedItem.currencyCode === item.currencyCode ? "selected" : ""
+                  selectedItem && selectedItem.code === item.code ? "selected" : ""
                 }`}
-                onClick={() => handleSelect(item.currencyCode)}
+                onClick={() => handleSelect(item.code)}
               >
                 <span>{item.text}</span>
                 <button
                   type="button"
                   onClick={(e) => {
                     e.stopPropagation();
-                    handleFavorite(item.currencyCode);
+                    handleFavorite(item.code);
                   }}
                   className="favorite-button"
                 >

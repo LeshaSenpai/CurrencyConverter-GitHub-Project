@@ -73,11 +73,15 @@ const CurrencyConvert = () => {
             <td>
               <SelectCurrency
                 className="CurrencyFrom"
+                defaultCurrency="BYN"
                 onSelect={setFromCurrency}
               />
             </td>
             <td>
-              <SelectCurrency className="CurrencyTo" onSelect={setToCurrency} />
+              <SelectCurrency 
+              className="CurrencyTo" 
+              defaultCurrency="USD"
+              onSelect={setToCurrency} />
             </td>
           </tr>
           <tr>
