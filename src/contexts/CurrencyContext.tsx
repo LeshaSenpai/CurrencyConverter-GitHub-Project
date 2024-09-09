@@ -30,7 +30,7 @@ interface CurrencyProviderProps {
   children: ReactNode;
 }
 
-export const CurrencyProvider: React.FC<CurrencyProviderProps> = ({ children }): ReactElement | null => {
+export const CurrencyProvider: React.FC<CurrencyProviderProps> = ({ children }): ReactElement => {
   const [rates, setRates] = useState<{ [key: string]: number } | null>(null);
   const [items, setItems] = useState<CurrencyItem[]>([]);
   const [favorite, setFavorite] = useState<string[]>([]);
@@ -88,10 +88,6 @@ export const CurrencyProvider: React.FC<CurrencyProviderProps> = ({ children }):
     const handler = favorite.includes(code) ? removeFromFavorite : addToFavorite;
     handler(code);
   };
-
-  if (!rates || !items.length) {
-    return null;
-  }
 
   return (
     <CurrencyContext.Provider
