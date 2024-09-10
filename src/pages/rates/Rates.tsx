@@ -34,11 +34,6 @@ const Rates = observer(() => {
                     <th>Символ валюты</th>
                     <th className="rate-header">
                         Курс к доллару
-                        <span className="info-icon">ⓘ</span>
-                        <span className="tooltip">
-                            Курс к доллару указывает на то, сколько единиц определённой
-                            валюты нужно, чтобы получить 1 доллар
-                        </span>
                     </th>
                     <th>Избранное</th>
                 </tr>
@@ -78,4 +73,4 @@ const Rates = observer(() => {
     );
 });
 
-export {Rates};
+export { Rates };

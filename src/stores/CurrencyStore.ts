@@ -13,7 +13,6 @@ export type ItemType = {
 
 export class CurrencyStore {
     rates: RawRatesType | null = null;
-    items: ItemType[] = [];
     favorite: string[] = [];
     loading: boolean = true;
     error: string | null = null;
@@ -24,8 +23,8 @@ export class CurrencyStore {
     }
 
     initializeData = async () => {
-        await this.getFavoriteData();
-        await this.fetchCurrencyData();
+        this.getFavoriteData();
+        this.fetchCurrencyData();
     }
 
     fetchCurrencyData = async () => {
@@ -33,7 +32,6 @@ export class CurrencyStore {
             const currencyData = await fetchCurrencyData();
             runInAction(() => {
                 this.rates = currencyData;
-                this.updateItems();
                 this.loading = false;
             });
         } catch (err) {
@@ -48,7 +46,6 @@ export class CurrencyStore {
         const newFavorite = await getFavorite();
         runInAction(() => {
             this.favorite = newFavorite;
-            this.updateItems();
         });
     }
 
@@ -67,23 +64,23 @@ export class CurrencyStore {
         handler(code);
     }
 
-    updateItems = () => {
-        if (!this.rates) return;
+    get items(): ItemType[] {
+        if (this.rates) {
+            return initialItems
+                .map((item) => ({
+                    ...item,
+                    isFavorite: this.favorite.includes(item.code),
+                    rate: this.rates![item.code] || 0,
+                }))
+                .sort((a, b) => {
+                    if (a.isFavorite === b.isFavorite) {
+                        return 0;
+                    }
+                    return a.isFavorite ? -1 : 1;
+                });
+        }
 
-        const newItems = initialItems
-            .map((item) => ({
-                ...item,
-                isFavorite: this.favorite.includes(item.code),
-                rate: this.rates![item.code] || 0,
-            }))
-            .sort((a, b) => {
-                if (a.isFavorite === b.isFavorite) {
-                    return 0;
-                }
-                return a.isFavorite ? -1 : 1;
-            });
-
-        this.items = newItems;
+        return [];
     }
 }
 
