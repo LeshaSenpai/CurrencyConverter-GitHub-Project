@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { observer } from "mobx-react-lite";
 import { currencyStore } from '../../stores/CurrencyStore';
 import { ItemType } from '../../stores/CurrencyStore';
@@ -32,6 +32,16 @@ const SelectCurrency = observer(({ onSelect, defaultCode }: SelectCurrencyPropsT
         };
     }, []);
 
+    const handleSelect = useCallback((code: string) => {
+        const selected = filteredItems.find((item) => item.code === code);
+        setSelectedItem(selected || null);
+        setIsOpen(false);
+
+        if (onSelect && selected) {
+            onSelect(selected);
+        }
+    }, [filteredItems, onSelect]);
+
     useEffect(() => {
         if (defaultCode && !selectedItem) {
             const selected = items.find((item) => item.code === defaultCode);
@@ -43,7 +53,7 @@ const SelectCurrency = observer(({ onSelect, defaultCode }: SelectCurrencyPropsT
         if (filteredItems.length && defaultCode && !selectedItem) {
             handleSelect(defaultCode);
         }
-    }, [filteredItems, defaultCode, selectedItem]);
+    }, [filteredItems, defaultCode, selectedItem, handleSelect]);
 
     useEffect(() => {
         if (!items || !items.length) {
@@ -60,16 +70,6 @@ const SelectCurrency = observer(({ onSelect, defaultCode }: SelectCurrencyPropsT
             );
         }
     }, [searchTerm, items]);
-
-    const handleSelect = (code: string) => {
-        const selected = filteredItems.find((item) => item.code === code);
-        setSelectedItem(selected || null);
-        setIsOpen(false);
-
-        if (onSelect && selected) {
-            onSelect(selected);
-        }
-    };
 
     const handleFavorite = (code: string) => {
         toggleFavorite(code);
