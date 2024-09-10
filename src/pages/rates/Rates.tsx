@@ -10,7 +10,7 @@ const Rates = () => {
         toggleFavorite,
     } = useContext(CurrencyContext);
 
-    const handleFavorite = (currencyCode) => {
+    const handleFavorite = (currencyCode: string) => {
         toggleFavorite(currencyCode);
     };
 

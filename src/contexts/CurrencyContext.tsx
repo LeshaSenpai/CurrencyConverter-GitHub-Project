@@ -1,105 +1,113 @@
-import React, { createContext, useState, useEffect, ReactNode, ReactElement } from 'react';
-import { fetchCurrencyData, getFavorite, addFavorite, removeFavorite } from '../api/CurrencyApi';
-import { initialItems } from "../components/initialItems";
+import React, {createContext, useState, useEffect, ReactNode} from 'react';
+import {fetchCurrencyData, getFavorite, addFavorite, removeFavorite, RawRatesType} from '../api/CurrencyApi';
+import {initialItems} from "../components/initialItems";
 
-interface InitialCurrencyItem {
-  code: string;
-  text: string;
-  symbol: string;
-  currencyCode: string;
+type CurrencyProviderPropsType = {
+    children?: ReactNode
 }
 
-interface CurrencyItem {
-  code: string;
-  text: string;
-  isFavorite: boolean;
-  rate: number;
+export type ItemType = {
+    text: string,
+    symbol: string,
+    code: string,
+    currencyCode: string,
+    rate: number
+    isFavorite: boolean
 }
 
-interface CurrencyContextType {
-  rates: { [key: string]: number } | null;
-  loading: boolean;
-  error: string | null;
-  items: CurrencyItem[];
-  toggleFavorite: (code: string) => void;
+export type CurrencyContextValue = {
+    rates: RawRatesType | null;
+    loading: boolean;
+    error: string | null;
+    items: ItemsType;
+    toggleFavorite: (code: string) => void;
 }
 
-export const CurrencyContext = createContext<CurrencyContextType | undefined>(undefined);
+export type ItemsType = ItemType[]
 
-interface CurrencyProviderProps {
-  children: ReactNode;
-}
+export const CurrencyContext = createContext<CurrencyContextValue>({
+    rates: {},
+    loading: false,
+    error: null,
+    items: [],
+    toggleFavorite: () => {},
+})
 
-export const CurrencyProvider: React.FC<CurrencyProviderProps> = ({ children }): ReactElement => {
-  const [rates, setRates] = useState<{ [key: string]: number } | null>(null);
-  const [items, setItems] = useState<CurrencyItem[]>([]);
-  const [favorite, setFavorite] = useState<string[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
+export const CurrencyProvider = ({children}: CurrencyProviderPropsType) => {
+    const [rates, setRates] = useState<RawRatesType | null>(null);
+    const [items, setItems] = useState<ItemsType>([]);
+    const [favorite, setFavorite] = useState<string[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
 
-  const getFavoriteData = async () => {
-    const newFavorite = await getFavorite();
-    setFavorite(newFavorite);
-  };
-
-  const addToFavorite = async (favoriteCode: string) => {
-    await addFavorite(favoriteCode);
-    getFavoriteData();
-  };
-
-  const removeFromFavorite = async (favoriteCode: string) => {
-    await removeFavorite(favoriteCode);
-    getFavoriteData();
-  };
-
-  useEffect(() => {
-    if (!rates) {
-      return;
+    const getFavoriteData = async () => {
+        const newFavorite = await getFavorite()
+        setFavorite(newFavorite);
     }
-    const newItems: CurrencyItem[] = initialItems
-      .map((item: InitialCurrencyItem) => ({
-        code: item.code,
-        text: item.text,
-        isFavorite: favorite.includes(item.code),
-        rate: rates[item.code] || 0,
-      }))
-      .sort((a: CurrencyItem, b: CurrencyItem) => Number(b.isFavorite) - Number(a.isFavorite));
 
-    setItems(newItems);
-  }, [rates, favorite]);
-
-  useEffect(() => {
-    getFavoriteData();
-    const loadCurrencyData = async () => {
-      try {
-        const currencyData = await fetchCurrencyData();
-        setRates(currencyData);
-      } catch (err) {
-        setError('Ошибка при загрузке данных');
-      } finally {
-        setLoading(false);
-      }
+    const addToFavorite = async (favoriteCode: string) => {
+        await addFavorite(favoriteCode);
+        getFavoriteData()
     };
 
-    loadCurrencyData();
-  }, []);
+    const removeFromFavorite = async (favoriteCode: string) => {
+        await removeFavorite(favoriteCode);
+        getFavoriteData()
+    };
 
-  const toggleFavorite = (code: string) => {
-    const handler = favorite.includes(code) ? removeFromFavorite : addToFavorite;
-    handler(code);
-  };
+    useEffect(() => {
+        if (!rates) {
+            return
+        }
 
-  return (
-    <CurrencyContext.Provider
-      value={{
-        rates,
-        loading,
-        error,
-        items,
-        toggleFavorite,
-      }}
-    >
-      {children}
-    </CurrencyContext.Provider>
-  );
+        const newItems = initialItems
+            .map((item) => ({
+                ...item,
+                isFavorite: favorite.includes(item.code),
+                rate: rates[item.code] || 0,
+            }))
+            .sort((a, b) => {
+                if (a.isFavorite === b.isFavorite) {
+                    return 0;
+                }
+                return a.isFavorite ? -1 : 1;
+            });
+
+        setItems(newItems)
+    }, [rates, favorite]);
+
+    useEffect(() => {
+        getFavoriteData()
+        const loadCurrencyData = async () => {
+            try {
+                const currencyData = await fetchCurrencyData();
+                setRates(currencyData);
+            } catch (err) {
+                setError('Ошибка при загрузке данных');
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        loadCurrencyData();
+    }, []);
+
+    const toggleFavorite = (code:string) => {
+        const handler = favorite.includes(code) ? removeFromFavorite : addToFavorite;
+        handler(code);
+    };
+
+    return (
+        <CurrencyContext.Provider
+            value={{
+                rates,
+                loading,
+                error,
+                items,
+                toggleFavorite,
+            } as CurrencyContextValue}
+        >
+            {children}
+        </CurrencyContext.Provider>
+    );
 };

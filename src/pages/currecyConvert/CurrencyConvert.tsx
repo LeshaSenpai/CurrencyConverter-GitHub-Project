@@ -1,14 +1,14 @@
 import React, {useState, useContext} from "react";
 import {SelectCurrency} from "../../components/selectCurrency/SelectCurrency";
-import {CurrencyContext} from '../../contexts/CurrencyContext';
+import {CurrencyContext, ItemType} from '../../contexts/CurrencyContext';
 import "./CurrencyConvert.css";
 
 const CurrencyConvert = () => {
     const {rates} = useContext(CurrencyContext);
     const [fromValue, setFromValue] = useState("");
     const [toValue, setToValue] = useState("");
-    const [fromCurrency, setFromCurrency] = useState("");
-    const [toCurrency, setToCurrency] = useState("");
+    const [fromCurrency, setFromCurrency] = useState<ItemType | null>(null);
+    const [toCurrency, setToCurrency] = useState<ItemType | null>(null);
     const [errorMessage, setErrorMessage] = useState("");
     const [lastInputField, setLastInputField] = useState("from");
 
@@ -33,8 +33,8 @@ const CurrencyConvert = () => {
 
         if (rates) {
             try {
-                const FactorCurrencyFrom = rates[fromCurrency.code] || rates["BYN"];
-                const FactorCurrencyTo = rates[toCurrency.code] || rates["USD"];
+                const FactorCurrencyFrom = rates[fromCurrency ? fromCurrency.code : "BYN"];
+                const FactorCurrencyTo = rates[toCurrency ? toCurrency.code : "USD"];
 
                 let result;
 
@@ -52,7 +52,7 @@ const CurrencyConvert = () => {
         }
     };
 
-    const handleInputChange = (e, isFromField) => {
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>, isFromField:boolean) => {
         const value = e.target.value;
         if (/^\d*\.?\d*$/.test(value)) {
             if (isFromField) {
@@ -72,14 +72,14 @@ const CurrencyConvert = () => {
                 <tr>
                     <td>
                         <SelectCurrency
-                            className="CurrencyFrom"
+                            // className="CurrencyFrom"
                             defaultCode="BYN"
                             onSelect={setFromCurrency}
                         />
                     </td>
                     <td>
                         <SelectCurrency
-                            className="CurrencyTo"
+                            // className="CurrencyTo"
                             defaultCode="USD"
                             onSelect={setToCurrency}/>
                     </td>
@@ -106,7 +106,7 @@ const CurrencyConvert = () => {
                     </td>
                 </tr>
                 <tr>
-                    <td colSpan="2">
+                    <td colSpan={2}>
                         <button className="CurrencyButton" onClick={handleConvert}>
                             Конвертировать
                         </button>

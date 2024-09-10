@@ -1,14 +1,19 @@
 {
-  "name": "euro",
+  "name": "test-react-app",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "@types/jest": "^27.5.2",
+    "@types/node": "^16.18.108",
+    "@types/react": "^18.3.5",
+    "@types/react-dom": "^18.3.0",
+    "@types/react-router-dom": "^5.3.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-router-dom": "^6.26.1",
+    "react-router-dom": "^6.26.2",
     "react-scripts": "5.0.1",
     "web-vitals": "^2.1.4"
   },
@@ -36,7 +41,12 @@
       "last 1 safari version"
     ]
   },
+  "description": "This is a simple currency converter application built with React. The application allows users to view exchange rates for various currencies and mark certain currencies as favorites, which will be saved and persisted between sessions.",
+  "main": "index.js",
   "devDependencies": {
-    "typescript": "^5.5.4"
-  }
+    "typescript": "^5.6.2"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }
