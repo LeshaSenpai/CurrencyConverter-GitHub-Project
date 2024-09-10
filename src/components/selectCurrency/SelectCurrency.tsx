@@ -1,23 +1,26 @@
-import React, {useState, useEffect, useRef, useContext} from "react";
-import {CurrencyContext, ItemType} from "../../contexts/CurrencyContext";
+import React, { useState, useEffect, useRef } from "react";
+import { observer } from "mobx-react-lite";
+import { currencyStore } from '../../stores/CurrencyStore';
+import { ItemType } from '../../stores/CurrencyStore';
+import "./SelectCurrency.css";
 
 type SelectCurrencyPropsType = {
     onSelect: (item: ItemType) => void;
-    defaultCode?: string
+    defaultCode?: string;
 }
 
-const SelectCurrency = ({onSelect, defaultCode}: SelectCurrencyPropsType) => {
-    const {items, toggleFavorite} = useContext(CurrencyContext);
+const SelectCurrency = observer(({ onSelect, defaultCode }: SelectCurrencyPropsType) => {
+    const { items, toggleFavorite } = currencyStore;
 
     const [filteredItems, setFilteredItems] = useState<ItemType[]>([]);
     const [selectedItem, setSelectedItem] = useState<ItemType | null>(null);
     const [isOpen, setIsOpen] = useState(false);
     const [searchTerm, setSearchTerm] = useState("");
-    const containerRef = useRef<HTMLInputElement>(null);
+    const containerRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
-            if (containerRef.current && !containerRef.current.contains((event.target as Node))) {
+            if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
                 setIsOpen(false);
             }
         };
@@ -29,11 +32,18 @@ const SelectCurrency = ({onSelect, defaultCode}: SelectCurrencyPropsType) => {
         };
     }, []);
 
-    useEffect(()=>{
-        if (filteredItems.length && defaultCode && !selectedItem) {
-            handleSelect(defaultCode)
+    useEffect(() => {
+        if (defaultCode && !selectedItem) {
+            const selected = items.find((item) => item.code === defaultCode);
+            setSelectedItem(selected || null);
         }
-    }, [filteredItems, defaultCode, selectedItem])
+    }, [defaultCode, items, selectedItem]);
+
+    useEffect(() => {
+        if (filteredItems.length && defaultCode && !selectedItem) {
+            handleSelect(defaultCode);
+        }
+    }, [filteredItems, defaultCode, selectedItem]);
 
     useEffect(() => {
         if (!items || !items.length) {
@@ -49,7 +59,7 @@ const SelectCurrency = ({onSelect, defaultCode}: SelectCurrencyPropsType) => {
                 )
             );
         }
-    }, [searchTerm, items, setFilteredItems])
+    }, [searchTerm, items]);
 
     const handleSelect = (code: string) => {
         const selected = filteredItems.find((item) => item.code === code);
@@ -125,6 +135,6 @@ const SelectCurrency = ({onSelect, defaultCode}: SelectCurrencyPropsType) => {
             )}
         </div>
     );
-};
+});
 
-export {SelectCurrency};
+export { SelectCurrency };

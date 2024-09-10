@@ -1,25 +1,26 @@
-import React, {useContext} from 'react';
-import {CurrencyContext} from '../../contexts/CurrencyContext';
+import React from 'react';
+import { observer } from 'mobx-react-lite';
+import { currencyStore } from '../../stores/CurrencyStore';
 import './Rates.css';
 
-const Rates = () => {
+const Rates = observer(() => {
     const {
         loading,
         error,
         items,
         toggleFavorite,
-    } = useContext(CurrencyContext);
+    } = currencyStore;
 
     const handleFavorite = (currencyCode: string) => {
         toggleFavorite(currencyCode);
     };
 
     if (loading) {
-        return <div>Загрузка...</div>;
+        return <div>Loading...</div>;
     }
 
     if (error) {
-        return <div>{error}</div>;
+        return <div>Error: {error}</div>;
     }
 
     return (
@@ -75,6 +76,6 @@ const Rates = () => {
             </table>
         </div>
     );
-};
+});
 
 export {Rates};

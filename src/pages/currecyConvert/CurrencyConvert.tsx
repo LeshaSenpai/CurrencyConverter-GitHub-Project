@@ -1,10 +1,11 @@
-import React, {useState, useContext} from "react";
-import {SelectCurrency} from "../../components/selectCurrency/SelectCurrency";
-import {CurrencyContext, ItemType} from '../../contexts/CurrencyContext';
+import React, { useState } from "react";
+import { observer } from "mobx-react-lite";
+import { SelectCurrency } from "../../components/selectCurrency/SelectCurrency";
+import { currencyStore, ItemType } from '../../stores/CurrencyStore';
 import "./CurrencyConvert.css";
 
-const CurrencyConvert = () => {
-    const {rates} = useContext(CurrencyContext);
+const CurrencyConvert = observer(() => {
+    const { rates } = currencyStore;
     const [fromValue, setFromValue] = useState("");
     const [toValue, setToValue] = useState("");
     const [fromCurrency, setFromCurrency] = useState<ItemType | null>(null);
@@ -52,7 +53,7 @@ const CurrencyConvert = () => {
         }
     };
 
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>, isFromField:boolean) => {
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>, isFromField: boolean) => {
         const value = e.target.value;
         if (/^\d*\.?\d*$/.test(value)) {
             if (isFromField) {
@@ -72,15 +73,13 @@ const CurrencyConvert = () => {
                 <tr>
                     <td>
                         <SelectCurrency
-                            // className="CurrencyFrom"
-                            defaultCode="BYN"
+                            defaultCode={fromCurrency ? fromCurrency.code : "BYN"}
                             onSelect={setFromCurrency}
                         />
                     </td>
                     <td>
                         <SelectCurrency
-                            // className="CurrencyTo"
-                            defaultCode="USD"
+                            defaultCode={toCurrency ? toCurrency.code : "USD"}
                             onSelect={setToCurrency}/>
                     </td>
                 </tr>
@@ -116,6 +115,6 @@ const CurrencyConvert = () => {
             </table>
         </div>
     );
-};
+});
 
-export {CurrencyConvert};
+export { CurrencyConvert };
