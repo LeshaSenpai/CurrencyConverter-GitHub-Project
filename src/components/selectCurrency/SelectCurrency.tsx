@@ -1,18 +1,23 @@
 import React, {useState, useEffect, useRef, useContext} from "react";
-import {CurrencyContext} from "../../contexts/CurrencyContext";
+import {CurrencyContext, ItemType} from "../../contexts/CurrencyContext";
 
-const SelectCurrency = ({onSelect, defaultCode}) => {
+type SelectCurrencyPropsType = {
+    onSelect: (item: ItemType) => void;
+    defaultCode?: string
+}
+
+const SelectCurrency = ({onSelect, defaultCode}: SelectCurrencyPropsType) => {
     const {items, toggleFavorite} = useContext(CurrencyContext);
 
-    const [filteredItems, setFilteredItems] = useState([]);
-    const [selectedItem, setSelectedItem] = useState(null);
+    const [filteredItems, setFilteredItems] = useState<ItemType[]>([]);
+    const [selectedItem, setSelectedItem] = useState<ItemType | null>(null);
     const [isOpen, setIsOpen] = useState(false);
     const [searchTerm, setSearchTerm] = useState("");
-    const containerRef = useRef(null);
+    const containerRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
-        const handleClickOutside = (event) => {
-            if (containerRef.current && !containerRef.current.contains(event.target)) {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (containerRef.current && !containerRef.current.contains((event.target as Node))) {
                 setIsOpen(false);
             }
         };
@@ -46,17 +51,17 @@ const SelectCurrency = ({onSelect, defaultCode}) => {
         }
     }, [searchTerm, items, setFilteredItems])
 
-    const handleSelect = (code) => {
+    const handleSelect = (code: string) => {
         const selected = filteredItems.find((item) => item.code === code);
-        setSelectedItem(selected);
+        setSelectedItem(selected || null);
         setIsOpen(false);
 
-        if (onSelect) {
+        if (onSelect && selected) {
             onSelect(selected);
         }
     };
 
-    const handleFavorite = (code) => {
+    const handleFavorite = (code: string) => {
         toggleFavorite(code);
     };
 
@@ -67,7 +72,7 @@ const SelectCurrency = ({onSelect, defaultCode}) => {
         }
     };
 
-    const handleSearchChange = (e) => {
+    const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSearchTerm(e.target.value);
     };
 
