@@ -5,14 +5,12 @@ import {CurrencyConvert} from './pages/currecyConvert/CurrencyConvert';
 import {NotFound} from './pages/NotFound';
 import {Rates} from './pages/rates/Rates';
 import {Footer} from './components/footer/Footer';
-import {CurrencyProvider} from './contexts/CurrencyContext';
 import './App.css';
 import './components/selectCurrency/SelectCurrency.css';
 
 
 function App() {
     return (
-        <CurrencyProvider>
             <Router>
                 <div className="page-container">
                     <Header/>
@@ -26,7 +24,6 @@ function App() {
                     <Footer/>
                 </div>
             </Router>
-        </CurrencyProvider>
     );
 }
 
